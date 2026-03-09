@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3월 SCHEDULE</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0ede8;
+    --surface: #ffffff;
+    --border: #d6d0c8;
+    --text: #1a1714;
+    --muted: #7a736a;
+    --accent: #c0392b;
+    --blue: #1a5fa8;
+    --green: #16803c;
+    --starria: #2563eb;
+    --casper: #d97706;
+    --leave: #7c3aed;
+    --annual: #059669;
+    --header-bg: #1a1714;
+    --sun: #c0392b;
+    --sat: #1a5fa8;
+    --today-bg: #fff8e7;
+    --today-border: #f59e0b;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* TOP BAR */
+  .topbar {
+    background: var(--header-bg);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .month-nav { display: flex; align-items: center; gap: 8px; }
+  .month-nav button {
+    background: rgba(255,255,255,0.12);
+    border: none;
+    color: white;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .month-nav button:hover { background: rgba(255,255,255,0.25); }
+  .month-label {
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    min-width: 80px;
+    text-align: center;
+  }
+  .topbar-actions { display: flex; gap: 10px; align-items: center; }
+  .btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-white { background: white; color: var(--text); }
+  .btn-white:hover { background: #f0ede8; }
+  .btn-accent { background: var(--accent); color: white; }
+  .btn-accent:hover { background: #a93226; }
+  .btn-blue { background: var(--blue); color: white; }
+  .btn-blue:hover { background: #154e8f; }
+
+  /* LEGEND */
+  .legend {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 24px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; }
+  .legend-dot {
+    width: 12px; height: 12px; border-radius: 3px;
+  }
+  .dot-starria { background: var(--starria); }
+  .dot-casper { background: var(--casper); }
+  .dot-leave { background: var(--leave); }
+  .dot-annual { background: var(--annual); }
+
+  /* CALENDAR WRAPPER */
+  .cal-wrap {
+    padding: 16px;
+    overflow-x: auto;
+  }
+
+  /* CALENDAR TABLE */
+  .cal {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: collapse;
+    background: var(--surface);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  }
+
+  .cal thead th {
+    background: var(--header-bg);
+    color: white;
+    text-align: center;
+    padding: 12px 8px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    width: calc(100% / 7);
+  }
+  .cal thead th.sun { color: #ff8080; }
+  .cal thead th.sat { color: #80b4ff; }
+
+  .cal tbody td {
+    border: 1px solid var(--border);
+    vertical-align: top;
+    padding: 0;
+    min-height: 120px;
+    width: calc(100% / 7);
+    position: relative;
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .cal tbody td:hover { background: #f7f4ef; }
+  .cal tbody td.today { background: var(--today-bg); }
+  .cal tbody td.today .date-num { color: var(--today-border); }
+  .cal tbody td.empty { background: #f5f3ef; cursor: default; }
+
+  .date-num {
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 8px 2px;
+    color: var(--text);
+  }
+  .date-num.sun { color: var(--sun); }
+  .date-num.sat { color: var(--sat); }
+
+  .cell-events {
+    padding: 2px 4px 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .event-chip {
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 10.5px;
+    font-weight: 600;
+    line-height: 1.5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    display: block;
+  }
+  .chip-starria { background: #dbeafe; color: #1e40af; border-left: 3px solid var(--starria); }
+  .chip-casper  { background: #fef3c7; color: #92400e; border-left: 3px solid var(--casper); }
+  .chip-leave   { background: #ede9fe; color: #5b21b6; border-left: 3px solid var(--leave); }
+  .chip-annual  { background: #d1fae5; color: #065f46; border-left: 3px solid var(--annual); }
+  .more-link { font-size: 10px; color: var(--muted); padding: 0 4px; cursor: pointer; }
+
+  /* MODAL OVERLAY */
+  .overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: slideUp 0.25s ease;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+  }
+
+  .modal-header {
+    padding: 20px 24px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .modal-title { font-size: 18px; font-weight: 800; }
+  .modal-close {
+    background: none; border: none; font-size: 22px;
+    cursor: pointer; color: var(--muted);
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .modal-close:hover { background: #f0ede8; }
+
+  .modal-body { padding: 16px 24px 24px; }
+
+  .form-group { margin-bottom: 14px; }
+  .form-label { display: block; font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 5px; letter-spacing: 0.5px; text-transform: uppercase; }
+  .form-control {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: white;
+    transition: border 0.15s;
+    appearance: none;
+  }
+  .form-control:focus { outline: none; border-color: var(--blue); }
+
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .radio-group { display: flex; gap: 8px; flex-wrap: wrap; }
+  .radio-option { position: relative; }
+  .radio-option input { position: absolute; opacity: 0; width: 0; }
+  .radio-option label {
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s;
+  }
+  .radio-option input:checked + label.starria { border-color: var(--starria); background: #dbeafe; color: #1e40af; }
+  .radio-option input:checked + label.casper  { border-color: var(--casper);  background: #fef3c7; color: #92400e; }
+  .radio-option input:checked + label.leave   { border-color: var(--leave);   background: #ede9fe; color: #5b21b6; }
+  .radio-option input:checked + label.annual  { border-color: var(--annual);  background: #d1fae5; color: #065f46; }
+
+  .event-list { margin-top: 16px; }
+  .event-list-title { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .event-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    font-size: 13px;
+  }
+  .event-item.starria { background: #dbeafe; }
+  .event-item.casper  { background: #fef3c7; }
+  .event-item.leave   { background: #ede9fe; }
+  .event-item.annual  { background: #d1fae5; }
+  .event-item-text { flex: 1; font-weight: 500; }
+  .event-item-name { font-weight: 700; }
+  .event-del {
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); font-size: 16px; padding: 2px 6px; border-radius: 6px;
+  }
+  .event-del:hover { background: rgba(0,0,0,0.08); color: var(--accent); }
+
+  .divider { border: none; border-top: 1.5px solid var(--border); margin: 16px 0; }
+
+  /* SIDE PANEL — Leave summary */
+  .summary-bar {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 12px 24px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    overflow-x: auto;
+  }
+  .summary-person {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; white-space: nowrap;
+  }
+  .summary-name { font-weight: 700; }
+  .badge {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .badge-leave  { background: #ede9fe; color: #5b21b6; }
+  .badge-annual { background: #d1fae5; color: #065f46; }
+
+  /* Add event form separator */
+  .add-form-box {
+    background: #f7f4ef;
+    border-radius: 14px;
+    padding: 16px;
+    margin-top: 8px;
+  }
+  .add-form-box .form-group { margin-bottom: 10px; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(60px);
+    background: var(--header-bg);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 999;
+    transition: transform 0.3s ease;
+    pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* MOBILE */
+  @media (max-width: 600px) {
+    .topbar { padding: 10px 14px; }
+    .month-label { font-size: 18px; }
+    .cal-wrap { padding: 8px; }
+    .legend { padding: 8px 14px; gap: 12px; }
+    .summary-bar { padding: 8px 14px; }
+    .event-chip { font-size: 9.5px; }
+    .date-num { font-size: 12px; }
+    .modal { border-radius: 16px; }
+    .btn { padding: 7px 12px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="month-nav">
+      <button onclick="changeMonth(-1)">&#8249;</button>
+      <div class="month-label" id="monthLabel">3월</div>
+      <button onclick="changeMonth(1)">&#8250;</button>
+    </div>
+    <span style="color:rgba(255,255,255,0.5); font-size:13px;" id="yearLabel">2026년</span>
+  </div>
+  <div class="topbar-actions">
+    <button class="btn btn-white" onclick="openSummary()">📋 공가/연차 현황</button>
+    <button class="btn btn-accent" onclick="openAdd(null)">＋ 일정 추가</button>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot dot-starria"></div> 스타리아</div>
+  <div class="legend-item"><div class="legend-dot dot-casper"></div> 캐스퍼</div>
+  <div class="legend-item"><div class="legend-dot dot-leave"></div> 공가</div>
+  <div class="legend-item"><div class="legend-dot dot-annual"></div> 연차</div>
+</div>
+
+<!-- CALENDAR -->
+<div class="cal-wrap">
+  <table class="cal" id="calTable">
+    <thead>
+      <tr>
+        <th class="sun">일 SUN</th>
+        <th>월 MON</th>
+        <th>화 TUE</th>
+        <th>수 WED</th>
+        <th>목 THU</th>
+        <th>금 FRI</th>
+        <th class="sat">토 SAT</th>
+      </tr>
+    </thead>
+    <tbody id="calBody"></tbody>
+  </table>
+</div>
+
+<!-- SUMMARY BAR -->
+<div class="summary-bar" id="summaryBar"></div>
+
+<!-- MODAL: Day Detail / Add Event -->
+<div class="overlay" id="overlay" onclick="closeAll(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">날짜 선택</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <!-- Existing events -->
+      <div id="existingEvents"></div>
+      <hr class="divider">
+      <!-- Add form -->
+      <div class="add-form-box">
+        <div style="font-size:13px;font-weight:700;margin-bottom:12px;color:var(--muted);">✚ 새 일정 추가</div>
+        <div class="form-group">
+          <label class="form-label">구분</label>
+          <div class="radio-group" id="typeRadio">
+            <div class="radio-option">
+              <input type="radio" name="etype" id="t1" value="starria" checked>
+              <label for="t1" class="starria">🚐 스타리아</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" name="etype" id="t2" value="casper">
+              <label for="t2" class="casper">🚗 캐스퍼</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" name="etype" id="t3" value="leave">
+              <label for="t3" class="leave">🏢 공가</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" name="etype" id="t4" value="annual">
+              <label for="t4" class="annual">🌴 연차</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">이름</label>
+          <select class="form-control" id="fName">
+            <option value="">-- 이름 선택 --</option>
+            <option>이강주</option><option>김수린</option><option>이지예</option>
+            <option>임태진</option><option>우종화</option><option>이지혜</option>
+            <option>박수정</option><option>정은숙</option><option>이효진</option>
+            <option>김현경</option><option>강경애</option>
+          </select>
+        </div>
+        <div id="timeFields" class="row2">
+          <div class="form-group" style="margin:0">
+            <label class="form-label">시작 시간</label>
+            <input type="time" class="form-control" id="fStart" value="09:00">
+          </div>
+          <div class="form-group" style="margin:0">
+            <label class="form-label">종료 시간</label>
+            <input type="time" class="form-control" id="fEnd" value="12:00">
+          </div>
+        </div>
+        <div class="form-group" style="margin-top:10px">
+          <label class="form-label">메모 (선택)</label>
+          <input type="text" class="form-control" id="fMemo" placeholder="예: 출장, 교육명...">
+        </div>
+        <button class="btn btn-blue" style="width:100%;justify-content:center;margin-top:4px" onclick="addEvent()">저장</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Summary -->
+<div class="overlay" id="summaryOverlay" onclick="closeSummary(event)">
+  <div class="modal" id="summaryModal">
+    <div class="modal-header">
+      <div class="modal-title">공가 / 연차 현황</div>
+      <button class="modal-close" onclick="closeSummaryModal()">✕</button>
+    </div>
+    <div class="modal-body" id="summaryContent"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">저장되었습니다</div>
+
+<script>
+// ─── STATE ──────────────────────────────────────────────────
+let currentYear = 2026;
+let currentMonth = 2; // 0-indexed: 2 = March
+let selectedDate = null;
+let events = {};
+
+const MEMBERS = [
+  '이강주','김수린','이지예','임태진','우종화',
+  '이지혜','박수정','정은숙','이효진','김현경','강경애',
+  '이름6','이름7','이름8','이름9','이름10','이름11','이름12'
+];
+
+// Seed initial data from CSV schedule
+// 일요일 담당자 (3월)
+const SUNDAY_DUTY = {
+  '2026-3-1': '이강주', '2026-3-8': '김수린', '2026-3-15': '이지예',
+  '2026-3-22': '임태진', '2026-3-29': '우종화'
+};
+
+function seedData() {
+  const seed = {
+    // 3월 3일(화)
+    '2026-3-3': [
+      {type:'casper', name:'달빛초', start:'', end:'', memo:'달빛초개교'},
+      {type:'casper', name:'경로당급식', start:'11:30', end:'13:00', memo:'캐스퍼'}
+    ],
+    // 3월 4일(수)
+    '2026-3-4': [
+      {type:'casper', name:'반짝이+깔끔이', start:'09:00', end:'13:00', memo:'캐스퍼'},
+      {type:'casper', name:'공동작업장', start:'09:30', end:'10:30', memo:'자차'},
+      {type:'casper', name:'학교길(윤슬초)', start:'14:40', end:'16:00', memo:'자차'}
+    ],
+    // 3월 5일(목)
+    '2026-3-5': [
+      {type:'casper', name:'실버카페', start:'10:00', end:'12:00', memo:'캐스퍼'},
+      {type:'casper', name:'지역사회', start:'10:00', end:'12:00', memo:'자차'},
+      {type:'casper', name:'시니어금융', start:'10:00', end:'12:00', memo:'자차'}
+    ],
+    // 3월 6일(금) - 공가: 이지혜
+    '2026-3-6': [
+      {type:'casper', name:'시니어공공+깔끔이+반짝이', start:'10:00', end:'14:00', memo:'캐스퍼'},
+      {type:'casper', name:'학교급식(중산고)', start:'09:00', end:'10:00', memo:'자차'},
+      {type:'casper', name:'학생건강', start:'13:00', end:'15:00', memo:'자차'},
+      {type:'leave', name:'이지혜', start:'', end:'', memo:'공가'}
+    ],
+    // 3월 9일(월) - 공가: 박수정
+    '2026-3-9': [
+      {type:'casper', name:'시니어공공+깔끔이', start:'14:00', end:'17:00', memo:'캐스퍼'},
+      {type:'casper', name:'경로당', start:'09:30', end:'12:00', memo:'자차'},
+      {type:'casper', name:'실버카페', start:'10:00', end:'12:00', memo:'캐스퍼'},
+      {type:'casper', name:'학교길(운서)', start:'13:00', end:'14:00', memo:'캐스퍼'},
+      {type:'leave', name:'박수정', start:'', end:'', memo:'공가'}
+    ],
+    // 3월 10일(화)
+    '2026-3-10': [
+      {type:'casper', name:'공공시설', start:'10:30', end:'12:00', memo:'자차'},
+      {type:'casper', name:'늘봄서비스', start:'13:00', end:'17:00', memo:'캐스퍼'},
+      {type:'casper', name:'실버책갈피', start:'10:30', end:'11:30', memo:'자차'},
+      {type:'casper', name:'실버카페', start:'09:00', end:'12:00', memo:'자차'}
+    ],
+    // 3월 11일(수)
+    '2026-3-11': [
+      {type:'casper', name:'공공시설+아동서비스+깔끔이', start:'09:00', end:'14:00', memo:'캐스퍼'}
+    ],
+    // 3월 12일(목)
+    '2026-3-12': [
+      {type:'casper', name:'학교길+아동+깔끔이', start:'09:30', end:'11:30', memo:'캐스퍼'},
+      {type:'casper', name:'아동', start:'13:00', end:'16:00', memo:'캐스퍼'}
+    ],
+    // 3월 13일(금) - 공가: 김수린
+    '2026-3-13': [
+      {type:'casper', name:'아동서비스', start:'13:00', end:'16:00', memo:'캐스퍼'},
+      {type:'leave', name:'김수린', start:'', end:'', memo:'공가'}
+    ],
+    // 3월 16일(월) - 연차: 이지예, 공가: 우종화(온라인), 정은숙
+    '2026-3-16': [
+      {type:'casper', name:'실버카페', start:'13:00', end:'17:00', memo:'캐스퍼'},
+      {type:'casper', name:'경로당', start:'09:00', end:'12:00', memo:''},
+      {type:'annual', name:'이지예', start:'', end:'', memo:'연차'},
+      {type:'leave', name:'우종화', start:'', end:'', memo:'공가(온라인)'},
+      {type:'leave', name:'정은숙', start:'', end:'', memo:'공가'}
+    ],
+    // 3월 17일(화) - 공가: 이강주(온라인)
+    '2026-3-17': [
+      {type:'casper', name:'실버책갈피', start:'09:30', end:'11:30', memo:'캐스퍼'},
+      {type:'leave', name:'이강주', start:'', end:'', memo:'공가(온라인)'}
+    ],
+    // 3월 18일(수) - 공가: 김수린
+    '2026-3-18': [
+      {type:'casper', name:'보육+반짝이', start:'09:00', end:'12:00', memo:'캐스퍼'},
+      {type:'leave', name:'김수린', start:'', end:'', memo:'공가'}
+    ],
+    // 3월 19일(목)
+    '2026-3-19': [
+      {type:'casper', name:'실버카페', start:'09:00', end:'12:00', memo:'캐스퍼'}
+    ],
+    // 3월 20일(금) - 전직원 교육
+    '2026-3-20': [
+      {type:'casper', name:'부패방지 및 청렴 교육', start:'15:00', end:'17:00', memo:'전직원'}
+    ],
+    // 3월 23일(월) - 공가: 임태진, 이지예, 이효진, 김현경(보수교육)
+    '2026-3-23': [
+      {type:'casper', name:'반짝이+경로당', start:'09:00', end:'15:00', memo:'캐스퍼'},
+      {type:'leave', name:'임태진', start:'', end:'', memo:'공가(보수교육)'},
+      {type:'leave', name:'이지예', start:'', end:'', memo:'공가(보수교육)'},
+      {type:'leave', name:'이효진', start:'', end:'', memo:'공가(보수교육)'},
+      {type:'leave', name:'김현경', start:'', end:'', memo:'공가(보수교육)'}
+    ],
+    // 3월 25일(수)
+    '2026-3-25': [
+      {type:'casper', name:'보육', start:'09:00', end:'12:00', memo:'캐스퍼'},
+      {type:'starria', name:'바람개비', start:'09:00', end:'13:00', memo:'스타리아'},
+      {type:'casper', name:'경로당실버', start:'13:00', end:'18:00', memo:'캐스퍼'}
+    ],
+    // 3월 26일(목)
+    '2026-3-26': [
+      {type:'casper', name:'실버카페', start:'09:00', end:'14:00', memo:'캐스퍼'}
+    ],
+    // 3월 27일(금) - 공가: 김현경(온라인교육)
+    '2026-3-27': [
+      {type:'leave', name:'김현경', start:'', end:'', memo:'공가(온라인교육)'}
+    ],
+    // 3월 30일(월)
+    '2026-3-30': [
+      {type:'casper', name:'시니어금공', start:'10:00', end:'12:00', memo:'캐스퍼'}
+    ],
+  };
+  // Always overwrite March 2026 data with seed
+  Object.keys(seed).forEach(k => { events[k] = seed[k]; });
+  save();
+}
+
+function save() {
+  // 공가/연차는 저장하지 않음 (seed에서만 관리)
+  const toSave = {};
+  Object.entries(events).forEach(([k, evs]) => {
+    const filtered = evs.filter(ev => ev.type !== 'leave' && ev.type !== 'annual');
+    if (filtered.length > 0) toSave[k] = filtered;
+  });
+  localStorage.setItem('scheduleEvents', JSON.stringify(toSave));
+}
+
+function dateKey(y, m, d) {
+  return `${y}-${m+1}-${d}`;
+}
+
+// ─── CALENDAR RENDER ─────────────────────────────────────────
+function renderCalendar() {
+  document.getElementById('monthLabel').textContent = (currentMonth+1) + '월';
+  document.getElementById('yearLabel').textContent = currentYear + '년';
+
+  const tbody = document.getElementById('calBody');
+  tbody.innerHTML = '';
+
+  const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+  const daysInMonth = new Date(currentYear, currentMonth+1, 0).getDate();
+  const today = new Date();
+
+  let day = 1;
+  for (let r = 0; r < 6; r++) {
+    if (day > daysInMonth) break;
+    const tr = document.createElement('tr');
+    for (let c = 0; c < 7; c++) {
+      const td = document.createElement('td');
+      if (r === 0 && c < firstDay || day > daysInMonth) {
+        td.classList.add('empty');
+      } else {
+        const isToday = today.getFullYear()===currentYear && today.getMonth()===currentMonth && today.getDate()===day;
+        if (isToday) td.classList.add('today');
+
+        const key = dateKey(currentYear, currentMonth, day);
+        const d = day;
+
+        // Date number
+        const num = document.createElement('div');
+        num.className = 'date-num' + (c===0?' sun':c===6?' sat':'');
+        num.textContent = d;
+        td.appendChild(num);
+
+        // 일요일 담당자 표시
+        if (c === 0) {
+          const dutyKey = `${currentYear}-${currentMonth+1}-${day}`;
+          const dutyName = SUNDAY_DUTY[dutyKey];
+          if (dutyName) {
+            const dutyEl = document.createElement('div');
+            dutyEl.style.cssText = 'font-size:10px;font-weight:700;color:#c0392b;padding:0 8px 2px;';
+            dutyEl.textContent = dutyName;
+            td.appendChild(dutyEl);
+          }
+        }
+
+        // Events
+        const evs = events[key] || [];
+        const cellEvs = document.createElement('div');
+        cellEvs.className = 'cell-events';
+        const shown = evs.slice(0, 3);
+        shown.forEach(ev => {
+          const chip = document.createElement('div');
+          chip.className = 'event-chip chip-' + ev.type;
+          chip.title = chipText(ev);
+          chip.textContent = chipText(ev);
+          cellEvs.appendChild(chip);
+        });
+        if (evs.length > 3) {
+          const more = document.createElement('div');
+          more.className = 'more-link';
+          more.textContent = `+${evs.length-3}개 더`;
+          cellEvs.appendChild(more);
+        }
+        td.appendChild(cellEvs);
+
+        td.addEventListener('click', () => openDay(currentYear, currentMonth, d));
+        day++;
+      }
+      tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+  }
+
+  renderSummaryBar();
+}
+
+function chipText(ev) {
+  let label = {starria:'🚐',casper:'🚗',leave:'🏢',annual:'🌴'}[ev.type] || '';
+  if (ev.name) label += ' ' + ev.name;
+  if (ev.start && ev.end) label += ` ${ev.start}~${ev.end}`;
+  if (ev.memo) label += ` (${ev.memo})`;
+  return label.trim();
+}
+
+// ─── MONTH NAV ───────────────────────────────────────────────
+// 해당 월의 공가/연차만 제거 (차량 일정은 유지)
+function clearLeaveAndAnnualForMonth(y, m) {
+  for (let d = 1; d <= 31; d++) {
+    const key = `${y}-${m+1}-${d}`;
+    if (events[key]) {
+      events[key] = events[key].filter(ev => ev.type !== 'leave' && ev.type !== 'annual');
+      if (events[key].length === 0) delete events[key];
+    }
+  }
+  save();
+}
+
+function changeMonth(dir) {
+  const prevYear = currentYear, prevMonth = currentMonth;
+  currentMonth += dir;
+  if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+  if (currentMonth < 0)  { currentMonth = 11; currentYear--; }
+  // 3월(seed 월)이 아닌 달로 이동하면 공가/연차 초기화
+  if (!(currentYear === 2026 && currentMonth === 2)) {
+    clearLeaveAndAnnualForMonth(currentYear, currentMonth);
+  }
+  renderCalendar();
+}
+
+// ─── DAY MODAL ───────────────────────────────────────────────
+function openDay(y, m, d) {
+  selectedDate = {y, m, d};
+  const key = dateKey(y, m, d);
+  const dow = ['일','월','화','수','목','금','토'][new Date(y,m,d).getDay()];
+  document.getElementById('modalTitle').textContent = `${m+1}월 ${d}일 (${dow})`;
+
+  renderExistingEvents(key);
+  document.getElementById('overlay').classList.add('open');
+}
+
+function renderExistingEvents(key) {
+  const evs = events[key] || [];
+  const container = document.getElementById('existingEvents');
+  if (evs.length === 0) {
+    container.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;padding:8px 0;">등록된 일정 없음</div>';
+    return;
+  }
+  container.innerHTML = '<div class="event-list-title">등록된 일정</div>';
+  evs.forEach((ev, i) => {
+    const item = document.createElement('div');
+    item.className = 'event-item ' + ev.type;
+    item.innerHTML = `
+      <div class="event-item-text">
+        <span class="event-item-name">${ev.name||'(미정)'}</span>
+        ${ev.start&&ev.end ? `<span> · ${ev.start}~${ev.end}</span>` : ''}
+        ${ev.memo ? `<span> · ${ev.memo}</span>` : ''}
+        <span style="font-size:11px;margin-left:4px;opacity:0.7">${{starria:'🚐스타리아',casper:'🚗캐스퍼',leave:'🏢공가',annual:'🌴연차'}[ev.type]}</span>
+      </div>
+      <button class="event-del" onclick="deleteEvent('${key}',${i})">🗑</button>
+    `;
+    container.appendChild(item);
+  });
+}
+
+function openAdd(date) {
+  if (date) { selectedDate = date; }
+  if (!selectedDate) {
+    const today = new Date();
+    selectedDate = {y:today.getFullYear(), m:today.getMonth(), d:today.getDate()};
+  }
+  const key = dateKey(selectedDate.y, selectedDate.m, selectedDate.d);
+  const dow = ['일','월','화','수','목','금','토'][new Date(selectedDate.y,selectedDate.m,selectedDate.d).getDay()];
+  document.getElementById('modalTitle').textContent = `${selectedDate.m+1}월 ${selectedDate.d}일 (${dow})`;
+  renderExistingEvents(key);
+  document.getElementById('overlay').classList.add('open');
+}
+
+function deleteEvent(key, idx) {
+  if (!confirm('삭제할까요?')) return;
+  events[key].splice(idx, 1);
+  if (events[key].length === 0) delete events[key];
+  save();
+  renderCalendar();
+  renderExistingEvents(key);
+  showToast('삭제되었습니다');
+}
+
+function addEvent() {
+  const type = document.querySelector('input[name="etype"]:checked').value;
+  const name = document.getElementById('fName').value;
+  const start = document.getElementById('fStart').value;
+  const end   = document.getElementById('fEnd').value;
+  const memo  = document.getElementById('fMemo').value.trim();
+
+  if (!name) { alert('이름을 선택해주세요.'); return; }
+
+  const key = dateKey(selectedDate.y, selectedDate.m, selectedDate.d);
+  if (!events[key]) events[key] = [];
+  events[key].push({type, name, start, end, memo});
+  save();
+  renderCalendar();
+  renderExistingEvents(key);
+  document.getElementById('fName').value = '';
+  document.getElementById('fMemo').value = '';
+  showToast('저장되었습니다 ✓');
+}
+
+// ─── SUMMARY ─────────────────────────────────────────────────
+function renderSummaryBar() {
+  const bar = document.getElementById('summaryBar');
+  bar.innerHTML = '';
+  const counts = {};
+  MEMBERS.forEach(n => counts[n] = {leave:0, annual:0});
+
+  Object.values(events).forEach(evs => {
+    evs.forEach(ev => {
+      if ((ev.type==='leave'||ev.type==='annual') && ev.name && counts[ev.name]) {
+        counts[ev.name][ev.type]++;
+      }
+    });
+  });
+
+  MEMBERS.forEach(name => {
+    const c = counts[name];
+    if (c.leave || c.annual) {
+      const el = document.createElement('div');
+      el.className = 'summary-person';
+      el.innerHTML = `<span class="summary-name">${name}</span>
+        ${c.leave  ? `<span class="badge badge-leave">공가 ${c.leave}</span>` : ''}
+        ${c.annual ? `<span class="badge badge-annual">연차 ${c.annual}</span>` : ''}`;
+      bar.appendChild(el);
+    }
+  });
+
+  if (bar.children.length === 0) {
+    bar.innerHTML = '<span style="font-size:12px;color:var(--muted);">이번 달 공가/연차 없음</span>';
+  }
+}
+
+function openSummary() {
+  const content = document.getElementById('summaryContent');
+  content.innerHTML = '';
+
+  const byPerson = {};
+  MEMBERS.forEach(n => byPerson[n] = []);
+
+  Object.entries(events).forEach(([key, evs]) => {
+    evs.forEach(ev => {
+      if ((ev.type==='leave'||ev.type==='annual') && ev.name) {
+        if (!byPerson[ev.name]) byPerson[ev.name] = [];
+        byPerson[ev.name].push({...ev, key});
+      }
+    });
+  });
+
+  let html = '';
+  MEMBERS.forEach(name => {
+    const evs = byPerson[name];
+    if (!evs || evs.length === 0) return;
+    html += `<div style="margin-bottom:16px">
+      <div style="font-weight:800;font-size:15px;margin-bottom:6px">${name}</div>`;
+    evs.forEach(ev => {
+      const parts = ev.key.split('-');
+      const label = `${parts[1]}월 ${parts[2]}일`;
+      html += `<div class="event-item ${ev.type}" style="margin-bottom:4px">
+        <div class="event-item-text">
+          <span style="font-weight:700">${label}</span>
+          · ${{leave:'🏢 공가',annual:'🌴 연차'}[ev.type]}
+          ${ev.memo?' · '+ev.memo:''}
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+  });
+
+  if (!html) html = '<div style="color:var(--muted);text-align:center;padding:24px">이번 달 공가/연차 없음</div>';
+  content.innerHTML = html;
+  document.getElementById('summaryOverlay').classList.add('open');
+}
+
+function closeAll(e) {
+  if (e.target === document.getElementById('overlay')) closeModal();
+}
+function closeSummary(e) {
+  if (e.target === document.getElementById('summaryOverlay')) closeSummaryModal();
+}
+function closeModal() { document.getElementById('overlay').classList.remove('open'); }
+function closeSummaryModal() { document.getElementById('summaryOverlay').classList.remove('open'); }
+
+// ─── TOAST ───────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ─── TYPE TOGGLE TIME FIELDS ─────────────────────────────────
+document.querySelectorAll('input[name="etype"]').forEach(r => {
+  r.addEventListener('change', () => {
+    const t = document.querySelector('input[name="etype"]:checked').value;
+    document.getElementById('timeFields').style.display =
+      (t==='leave'||t==='annual') ? 'none' : 'grid';
+  });
+});
+
+// ─── INIT ────────────────────────────────────────────────────
+seedData();
+renderCalendar();
+</script>
+</body>
+</html>

@@ -438,15 +438,8 @@ with col4:
     selected_purp = st.multiselect("출장목적 선택", purp_list)
 
 st.subheader("이동수단 선택")
-vehicle_options = ["캐스퍼", "베뉴 203하 6765", "베뉴 203하 6766", "버스", "자차", "도보"]
+vehicle_options = ["스타리아", "캐스퍼", "베뉴", "자차", "도보"]
 vehicle = st.selectbox("사용하신 이동수단", vehicle_options)
-
-st.subheader("여비 계산 방식")
-fare_mode = st.radio(
-    "여비 지급 여부 계산 방식을 선택하세요",
-    ["여비 원래대로 계산", "무조건 미지급"],
-    horizontal=True
-)
 
 st.subheader("실제 출장 시간 입력 (최대 3개 출장기간)")
 st.caption("출장기간 1은 필수 입력, 2·3은 추가 출장이 있을 경우 입력하세요.")
@@ -569,10 +562,6 @@ elif vehicle == "도보":
 else:
     여비지급여부 = (총분수 >= 240)
     차량상태 = "이상없음"
-
-# 무조건 미지급 모드 선택 시 계산 결과와 무관하게 미지급 처리
-if fare_mode == "무조건 미지급":
-    여비지급여부 = False
 
 # ==========================================
 # 4. 엑셀 생성

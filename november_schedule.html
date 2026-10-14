@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>11월 활동 일정 안내</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sky:#e6f3fb; --paper:#ffffff; --ink:#14305e; --ink-soft:#3d5580;
+  --green:#2e7d32; --green-bg:#e3f3e4; --yellow:#ffe680; --yellow-bg:#fff6cc;
+  --blue:#1565c0; --blue-bg:#dcebfa; --off:#b3261e; --off-bg:#f1eceb;
+  --line:#c9d8e6; --pink:#d81b60;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --sky:#0f1c2e; --paper:#18283e; --ink:#eaf2ff; --ink-soft:#b6c7e2;
+    --green:#7fd685; --green-bg:#1b3a21; --yellow:#ffe680; --yellow-bg:#3b3410;
+    --blue:#8fc2ff; --blue-bg:#16314f; --off:#ff9f97; --off-bg:#2f2524;
+    --line:#2f4764; --pink:#ff7ba8;
+  }
+}
+:root[data-theme="dark"]{
+  --sky:#0f1c2e; --paper:#18283e; --ink:#eaf2ff; --ink-soft:#b6c7e2;
+  --green:#7fd685; --green-bg:#1b3a21; --yellow:#ffe680; --yellow-bg:#3b3410;
+  --blue:#8fc2ff; --blue-bg:#16314f; --off:#ff9f97; --off-bg:#2f2524;
+  --line:#2f4764; --pink:#ff7ba8;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--sky); color:var(--ink);
+  font-family:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  font-size:18px; line-height:1.55;
+}
+.wrap{max-width:760px;margin:0 auto;padding:18px 14px 40px}
+h1{
+  font-family:"Black Han Sans","Noto Sans KR",sans-serif;
+  font-weight:400; font-size:clamp(34px,9vw,52px); line-height:1.15;
+  margin:6px 0 4px; text-align:center; letter-spacing:.01em;
+}
+.sub{text-align:center;color:var(--ink-soft);font-weight:700;margin:0 0 16px;font-size:clamp(16px,4.2vw,20px)}
+
+.listen-all{
+  display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+  background:var(--green);color:#fff;border:0;border-radius:18px;
+  font:900 clamp(22px,6vw,28px)/1.2 "Noto Sans KR",sans-serif;padding:18px 12px;cursor:pointer;
+}
+:root[data-theme="dark"] .listen-all{color:#0b2a10}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .listen-all{color:#0b2a10}}
+.listen-all:focus-visible,.btn:focus-visible,.cell:focus-visible,.link:focus-visible{outline:4px solid var(--pink);outline-offset:3px}
+.stop{
+  display:block;margin:10px auto 0;background:transparent;color:var(--ink);
+  border:2px solid var(--line);border-radius:14px;padding:8px 20px;
+  font:700 17px "Noto Sans KR",sans-serif;cursor:pointer;
+}
+
+/* 평가회 알림: 항상 보이는 핵심 안내 */
+.notice{
+  margin:18px 0 14px;background:var(--paper);border:3px solid var(--green);border-radius:20px;overflow:hidden;
+}
+.notice-head{background:var(--green);color:#fff;padding:10px 16px;font-weight:900;font-size:clamp(20px,5.4vw,26px)}
+:root[data-theme="dark"] .notice-head{color:#0b2a10}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .notice-head{color:#0b2a10}}
+.notice-body{padding:12px 16px 16px}
+.row{display:flex;gap:12px;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--line)}
+.row:last-of-type{border-bottom:0}
+.row b{flex:0 0 70px;color:var(--green);font-weight:900}
+.row span{font-weight:700}
+.call{
+  margin-top:10px;background:var(--yellow-bg);border-radius:14px;padding:10px 14px;font-weight:900;
+  font-size:clamp(19px,5vw,23px);line-height:1.45
+}
+.call em{font-style:normal;color:var(--pink)}
+.only{display:inline-block;background:var(--pink);color:#fff;border-radius:10px;padding:2px 12px;margin-bottom:4px;font-weight:900;font-size:clamp(19px,5vw,23px)}
+:root[data-theme="dark"] .only{color:#3b0a1c}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .only{color:#3b0a1c}}
+
+.legend{display:flex;flex-wrap:wrap;gap:8px 14px;justify-content:center;margin:6px 0 12px;font-weight:700;font-size:16px}
+.legend i{display:inline-block;width:16px;height:16px;border-radius:5px;vertical-align:-2px;margin-right:5px;border:2px solid transparent}
+
+.cal{background:var(--paper);border-radius:20px;padding:10px;border:2px solid var(--line)}
+.cal-title{text-align:center;font-weight:900;font-size:clamp(24px,6.5vw,32px);margin:4px 0 8px}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.dow{text-align:center;font-weight:900;padding:4px 0;font-size:clamp(15px,4vw,19px)}
+.dow.sun{color:var(--off)} .dow.sat{color:var(--blue)}
+.cell{
+  position:relative;min-height:clamp(62px,15vw,92px);border-radius:12px;border:2px solid var(--line);
+  background:var(--paper);color:var(--ink);padding:4px 2px 4px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:2px;
+  font-family:inherit;
+}
+.cell .n{font-weight:900;font-size:clamp(18px,5vw,26px);line-height:1.1}
+.cell .t{font-weight:900;font-size:clamp(11px,3.1vw,15px);line-height:1.15;word-break:keep-all;text-align:center}
+.cell.blank{visibility:hidden;border:0}
+.cell.off{background:var(--off-bg);border-color:transparent}
+.cell.off .n,.cell.off .t{color:var(--off)}
+.cell.act{background:var(--paper)}
+.cell.act .t{color:var(--green)}
+.cell.work{background:var(--blue-bg);border-color:var(--blue)}
+.cell.work .t{color:var(--blue)}
+.cell.eval{background:var(--yellow);border-color:var(--green);border-width:4px;color:#14305e}
+.cell.eval .n,.cell.eval .t{color:#14305e}
+.cell.later{border-style:dashed;color:var(--ink-soft)}
+.cell[aria-pressed="true"]{outline:4px solid var(--pink);outline-offset:1px}
+
+.detail{margin-top:14px;background:var(--paper);border:2px solid var(--line);border-radius:20px;padding:16px}
+.detail h2{margin:0 0 6px;font-weight:900;font-size:clamp(24px,6.5vw,32px)}
+.badge{display:inline-block;border-radius:999px;padding:3px 14px;font-weight:900;font-size:17px;margin-bottom:8px}
+.badge.off{background:var(--off-bg);color:var(--off)}
+.badge.act{background:var(--green-bg);color:var(--green)}
+.badge.work{background:var(--blue-bg);color:var(--blue)}
+.badge.eval{background:var(--yellow);color:#14305e}
+.badge.later{background:var(--line);color:var(--ink)}
+.detail p{margin:6px 0;font-weight:700;font-size:clamp(19px,5vw,23px)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.btn,.link{
+  flex:1 1 200px;text-align:center;text-decoration:none;cursor:pointer;
+  border-radius:16px;padding:14px 12px;font:900 clamp(19px,5vw,22px) "Noto Sans KR",sans-serif;border:0;
+}
+.btn{background:var(--blue);color:#fff}
+:root[data-theme="dark"] .btn{color:#06203d}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn{color:#06203d}}
+.link{background:var(--yellow);color:#14305e}
+
+.contact{margin-top:18px;text-align:center;font-weight:700;color:var(--ink-soft)}
+.contact a{color:var(--ink);font-weight:900;text-decoration:none;border-bottom:3px solid var(--yellow)}
+.org{margin-top:6px;text-align:center;font-weight:900}
+.nospeech{display:none;margin-top:10px;background:var(--yellow-bg);padding:10px 14px;border-radius:12px;font-weight:700}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>11월 활동 일정</h1>
+  <p class="sub">바람&amp;공원 · 영종구노인인력개발센터</p>
+
+  <button class="listen-all" id="listenAll" type="button">🔊 전체 일정 듣기</button>
+  <button class="stop" id="stopBtn" type="button">■ 음성 멈추기</button>
+  <div class="nospeech" id="nospeech">이 기기에서는 음성 안내를 지원하지 않습니다. 크롬 또는 사파리 브라우저로 열어 주세요.</div>
+
+  <section class="notice" aria-label="사업 평가회 안내">
+    <div class="notice-head">📢 11월 18일(수) 사업 평가회<br>※ 공원자연지킴이(영종)만 해당</div>
+    <div class="notice-body">
+      <div class="row"><b>대상</b><span><strong class="only">공원자연지킴이(영종)만 해당</strong><br>오전·오후 참여자 어르신 · 그 외 참여자는 해당 없음</span></div>
+      <div class="row"><b>일시</b><span>11월 18일(수) 10:30 ~ 12:00</span></div>
+      <div class="row"><b>장소</b><span>운남동 영종복합문화센터</span></div>
+      <div class="call">활동일을 대체하므로<br>자리를 <em>꼭 빛내주시기</em> 바랍니다.</div>
+    </div>
+  </section>
+
+  <div class="legend" aria-hidden="true">
+    <span><i style="background:var(--off-bg);border-color:var(--off)"></i>쉬는 날</span>
+    <span><i style="background:var(--paper);border-color:var(--green)"></i>활동일</span>
+    <span><i style="background:var(--blue-bg);border-color:var(--blue)"></i>워크북 교육</span>
+    <span><i style="background:var(--yellow);border-color:var(--green)"></i>사업 평가회</span>
+  </div>
+
+  <section class="cal" aria-label="2026년 11월 달력">
+    <div class="cal-title">2026년 11월</div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section class="detail" id="detail" aria-live="polite"></section>
+
+  <p class="contact">문의 · 담당자 임태진 <a href="tel:07044462909">070-4446-2909</a></p>
+  <p class="org">영종구노인인력개발센터</p>
+</div>
+
+<script>
+(function(){
+  var YEAR=2026, MONTH=10; // JS month index: 10 = 11월
+  var DOW=['일','월','화','수','목','금','토'];
+  var MAP_URL='https://loveslip727-ctrl.github.io/cultural/';
+  var LAST_KNOWN=20; // 일정이 정해진 마지막 날
+
+  function info(d){
+    var dow=new Date(YEAR,MONTH,d).getDay();
+    var head='11월 '+d+'일 '+DOW[dow]+'요일';
+    if(d>LAST_KNOWN){
+      return {type:'later',short:'',badge:'일정 확인',head:head,
+        lines:['이 달력에는 11월 1일부터 20일까지의 일정이 담겨 있습니다.','21일 이후 일정은 담당자에게 문의해 주세요.'],
+        say:head+'입니다. 이 달력에는 11월 20일까지의 일정이 담겨 있습니다. 이후 일정은 담당자에게 문의해 주세요.'};
+    }
+    if(d===18){
+      return {type:'eval',short:'평가회<br>공원만',badge:'사업 평가회 · 공원자연지킴이만',head:head,
+        lines:['★ 공원자연지킴이(영종)만 해당입니다.','오전·오후 참여자 어르신 / 그 외 참여자는 해당되지 않습니다.','시간: 10:30 ~ 12:00','장소: 운남동 영종복합문화센터','활동일을 대체하므로 자리를 꼭 빛내주시기 바랍니다.'],
+        say:head+'. 사업 평가회가 있는 날입니다. 공원자연지킴이 영종 참여자만 해당됩니다. 오전 오후 참여자 어르신이 대상이며, 그 외 참여자는 해당되지 않습니다. 시간은 오전 10시 30분부터 낮 12시까지입니다. 장소는 운남동 영종복합문화센터입니다. 활동일을 대체하므로 자리를 꼭 빛내주시기 바랍니다.',
+        place:true};
+    }
+    if(dow===0||dow===6){
+      return {type:'off',short:'휴무',badge:'쉬는 날',head:head,
+        lines:['토요일, 일요일은 쉬는 날입니다.','활동하지 않습니다.'],
+        say:head+'입니다. 쉬는 날입니다. 활동하지 않습니다.'};
+    }
+    if(d>=4&&d<=6){
+      return {type:'work',short:'워크북 교육',badge:'워크북 교육',head:head,
+        lines:['11월 4일부터 6일까지 3일간 워크북 교육이 있습니다.'],
+        say:head+'입니다. 오늘은 워크북 교육이 있는 날입니다. 워크북 교육은 11월 4일부터 6일까지 3일간 진행됩니다.'};
+    }
+    return {type:'act',short:'활동',badge:'활동일',head:head,
+      lines:['정상 활동일입니다.'],
+      say:head+'입니다. 정상 활동일입니다.'};
+  }
+
+  var FULL=[
+    '11월 활동 일정을 안내해 드립니다.',
+    '11월 1일부터 20일까지, 토요일과 일요일은 쉽니다.',
+    '11월 4일부터 6일까지는 워크북 교육이 있습니다.',
+    '11월 18일 수요일, 오전 10시 30분부터 낮 12시까지, 운남동 영종복합문화센터에서 사업 평가회가 열립니다.',
+    '이날은 공원자연지킴이 영종 참여자만 해당됩니다. 오전 오후 참여자 어르신이 대상이며, 그 외 참여자는 해당되지 않습니다.',
+    '활동일을 대체하므로 자리를 꼭 빛내주시기 바랍니다.',
+    '문의는 임태진 담당자, 공칠공 사사사육 이구공구 번입니다.'
+  ];
+
+  /* ---------- 음성 ---------- */
+  var synth=window.speechSynthesis, voice=null, canSpeak=!!synth && 'SpeechSynthesisUtterance' in window;
+  function pickVoice(){
+    if(!canSpeak) return;
+    var vs=synth.getVoices();
+    voice=null;
+    for(var i=0;i<vs.length;i++){ if(/^ko/i.test(vs[i].lang)){ voice=vs[i]; break; } }
+  }
+  if(canSpeak){ pickVoice(); if(synth.onvoiceschanged!==undefined) synth.onvoiceschanged=pickVoice; }
+  else document.getElementById('nospeech').style.display='block';
+
+  function speak(list){
+    if(!canSpeak) return;
+    synth.cancel();
+    (Array.isArray(list)?list:[list]).forEach(function(t){
+      var u=new SpeechSynthesisUtterance(t);
+      u.lang='ko-KR'; u.rate=0.85; u.pitch=1; u.volume=1;
+      if(voice) u.voice=voice;
+      synth.speak(u);
+    });
+  }
+  function stop(){ if(canSpeak) synth.cancel(); }
+
+  /* ---------- 달력 ---------- */
+  var grid=document.getElementById('grid'), detail=document.getElementById('detail'), selected=null;
+  DOW.forEach(function(n,i){
+    var e=document.createElement('div');
+    e.className='dow'+(i===0?' sun':i===6?' sat':'');
+    e.textContent=n; grid.appendChild(e);
+  });
+  var first=new Date(YEAR,MONTH,1).getDay(), days=new Date(YEAR,MONTH+1,0).getDate();
+  for(var b=0;b<first;b++){ var bl=document.createElement('div'); bl.className='cell blank'; grid.appendChild(bl); }
+  var cells={};
+  for(var d=1; d<=days; d++){
+    (function(d){
+      var it=info(d);
+      var c=document.createElement('button');
+      c.type='button';
+      c.className='cell '+it.type;
+      c.setAttribute('aria-pressed','false');
+      c.setAttribute('aria-label',it.head+' '+(it.badge||''));
+      c.innerHTML='<span class="n">'+d+'</span>'+(it.short?'<span class="t">'+it.short+'</span>':'');
+      c.addEventListener('click',function(){ select(d,true); });
+      grid.appendChild(c); cells[d]=c;
+    })(d);
+  }
+
+  function select(d,say){
+    var it=info(d);
+    if(selected&&cells[selected]) cells[selected].setAttribute('aria-pressed','false');
+    selected=d; cells[d].setAttribute('aria-pressed','true');
+    var html='<h2>'+it.head+'</h2><span class="badge '+it.type+'">'+it.badge+'</span>';
+    it.lines.forEach(function(l){ html+='<p>'+l+'</p>'; });
+    html+='<div class="actions"><button type="button" class="btn" id="speakDay">🔊 이 날짜 듣기</button>';
+    if(it.place) html+='<a class="link" href="'+MAP_URL+'" target="_blank" rel="noopener">📍 길 안내 보기</a>';
+    html+='</div>';
+    detail.innerHTML=html;
+    document.getElementById('speakDay').addEventListener('click',function(){ speak(it.say); });
+    if(say) speak(it.say);
+  }
+
+  document.getElementById('listenAll').addEventListener('click',function(){ speak(FULL); });
+  document.getElementById('stopBtn').addEventListener('click',stop);
+  window.addEventListener('pagehide',stop);
+
+  select(18,false); // 처음에는 평가회 날짜를 보여줍니다 (자동 재생 없음)
+})();
+</script>
+</body>
+</html>
